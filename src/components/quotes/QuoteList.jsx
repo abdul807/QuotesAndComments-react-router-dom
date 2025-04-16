@@ -8,7 +8,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 const QuoteList = (props) => {
   const SortQuotes = (quotes, ascending) => {
     return quotes.sort((quoteA, quoteB) => {
-      return ascending ? quoteB.id - quoteA.id : quoteA.id - quoteB.id;
+      if (ascending) {
+        return quoteA.id < quoteB.id ? 1 : -1;
+      } else {
+        return quoteA.id > quoteB.id ? 1 : -1;
+      }
     });
   };
 
@@ -21,7 +25,11 @@ const QuoteList = (props) => {
   const sortedQuotes = SortQuotes(props.quotes, isSortingAscending);
 
   const handleSorting = () => {
-    navigate("/quotes?sort=" + (isSortingAscending ? "desc" : "asc"));
+    // navigate("/quotes?sort=" + (isSortingAscending ? "desc" : "asc"));
+    navigate({
+      pathname: "/quotes",
+      search: "?sort=" + (isSortingAscending ? "desc" : "asc"),
+    })
     console.log(location);
     // console.log(query)
     console.log(isSortingAscending);
@@ -46,6 +54,7 @@ const QuoteList = (props) => {
               text={quote.text}
             />
           ))}
+          <p></p>
         </ul>
       )}
     </Fragment>
